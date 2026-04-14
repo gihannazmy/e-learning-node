@@ -5,12 +5,13 @@ const router = express.Router();
 
 
 const User = require('../models/user');
-const {signup, getAllUsers} = require('../controllers/authController');
+const {signup, getAllusers, login} = require('../controllers/authController');
 
 
 router.post('/', signup);
+router.get('/', login)
 
 //for testing only
-router.get('/', getAllUsers);
+router.get('/', getAllusers);
 
 module.exports = router;

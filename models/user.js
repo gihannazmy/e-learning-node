@@ -22,13 +22,12 @@ const userSchema = new Schema({
     required: [true, 'Please add a password'],
     select: false,
     minlength: 6
-  },
+  },},
     
-    timestamps: true,
+ {timestamps: true,
   
-},
-  {
-    timestamps: true,
+
+ 
   });
 
 userSchema.pre('save', async function () {
@@ -39,10 +38,10 @@ userSchema.pre('save', async function () {
 
     
 });
-userSchema.methods.correctPassword = async function () {
-return await bcrypt.compare(candidatePassword, userPassword)    
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-const User = mongoose.model('User', userSchema1);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
