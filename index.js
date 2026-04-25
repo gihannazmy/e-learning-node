@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 
 const userRoutes = require('./routes/userRoutes')
+const courseRoutes = require('./routes/courseRoutes')
 
 require('./db');
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended: true}));
 //
 //routes
 app.use('/users', userRoutes);
+app.use('/courses', courseRoutes);
 //
 //global handler
 app.use((err,req,res,next)=>{
