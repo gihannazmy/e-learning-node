@@ -3,15 +3,16 @@
 const express = require('express');
 const router = express.Router();
 
-
 const User = require('../models/user');
-const {signup, getAllusers, login} = require('../controllers/authController');
+const {signup, getAllusers, login, logout} = require('../controllers/authController');
+const { protect } = require('../utils/auth');
+const { validateUserSignup, validateUserLogin } = require('../utils/validation');
 
+router.post('/signup', validateUserSignup, signup);
+router.post('/login', validateUserLogin, login);
+router.get('/logout', logout);
 
-router.post('/signup', signup);
-router.post('/login', login);
-
-//for testing only
-router.get('/', getAllusers);
+//for testing only - should be protected in production
+router.get('/', protect, getAllusers);
 
 module.exports = router;

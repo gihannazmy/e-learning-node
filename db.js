@@ -1,6 +1,45 @@
 const mongoose = require('mongoose');
+const config = require('./utils/config');
 
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(config.database.uri, {
+      // Modern Mongoose options (these are defaults in newer versions)
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+    });
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/e-learning')
-.then(()=> {console.log('Connected to db')})
-.catch((err)=>{console.log(err)});
+    if (config.isDevelopment()) {
+      console.log(`MongoDB Connected: ${conn.connection.host}`);
+    }
+  } catch (error) {
+    console.error('Database connection error:', error.message);
+    process.exit(1);
+  }
+};
+
+// Handle connection events
+mongoose.connection.on('connected', () => {
+  if (config.isDevelopment()) {
+    console.log('Mongoose connected to MongoDB');
+  }
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('Mongoose connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  if (config.isDevelopment()) {
+    console.log('Mongoose disconnected');
+  }
+});
+
+// Close connection on app termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('MongoDB connection closed due to app termination');
+  process.exit(0);
+});
+
+module.exports = connectDB;

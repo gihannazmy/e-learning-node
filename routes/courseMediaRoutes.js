@@ -7,11 +7,13 @@ const {
   updateCourseMedia,
   deleteCourseMedia
 } = require('../controllers/courseMediaController');
+const { protect, restrictTo } = require('../utils/auth');
+const { validateCourseMedia, validateCourseMediaId } = require('../utils/validation');
 
-router.post('/', createCourseMedia);
-router.get('/', getCourseMedias);
-router.get('/:id', getCourseMedia);
-router.put('/:id', updateCourseMedia);
-router.delete('/:id', deleteCourseMedia);
+router.post('/', protect, restrictTo('instructor', 'admin'), validateCourseMedia, createCourseMedia);
+router.get('/', protect, getCourseMedias);
+router.get('/:id', protect, validateCourseMediaId, getCourseMedia);
+router.put('/:id', protect, restrictTo('instructor', 'admin'), validateCourseMediaId, validateCourseMedia, updateCourseMedia);
+router.delete('/:id', protect, restrictTo('admin'), validateCourseMediaId, deleteCourseMedia);
 
 module.exports = router;

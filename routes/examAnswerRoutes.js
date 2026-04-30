@@ -7,11 +7,13 @@ const {
   updateExamAnswer,
   deleteExamAnswer
 } = require('../controllers/examAnswerController');
+const { protect, restrictTo } = require('../utils/auth');
+const { validateExamAnswer, validateExamAnswerId } = require('../utils/validation');
 
-router.post('/', createExamAnswer);
-router.get('/', getExamAnswers);
-router.get('/:id', getExamAnswer);
-router.put('/:id', updateExamAnswer);
-router.delete('/:id', deleteExamAnswer);
+router.post('/', protect, validateExamAnswer, createExamAnswer);
+router.get('/', protect, getExamAnswers);
+router.get('/:id', protect, validateExamAnswerId, getExamAnswer);
+router.put('/:id', protect, validateExamAnswerId, validateExamAnswer, updateExamAnswer);
+router.delete('/:id', protect, restrictTo('admin'), validateExamAnswerId, deleteExamAnswer);
 
 module.exports = router;

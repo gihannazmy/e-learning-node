@@ -7,11 +7,13 @@ const {
   updateDepartment,
   deleteDepartment
 } = require('../controllers/departmentController');
+const { protect, restrictTo } = require('../utils/auth');
+const { validateDepartment, validateDepartmentId } = require('../utils/validation');
 
-router.post('/', createDepartment);
+router.post('/', protect, restrictTo('admin'), validateDepartment, createDepartment);
 router.get('/', getDepartments);
-router.get('/:id', getDepartment);
-router.put('/:id', updateDepartment);
-router.delete('/:id', deleteDepartment);
+router.get('/:id', validateDepartmentId, getDepartment);
+router.put('/:id', protect, restrictTo('admin'), validateDepartmentId, validateDepartment, updateDepartment);
+router.delete('/:id', protect, restrictTo('admin'), validateDepartmentId, deleteDepartment);
 
 module.exports = router;

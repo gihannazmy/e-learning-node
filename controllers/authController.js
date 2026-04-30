@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const AppError = require('../utils/AppError.js');
-const signToken = require('../utils/jwt')
+const { signToken } = require('../utils/jwt')
 
 const signup = async (req, res, next) =>{
     try{
@@ -27,6 +27,7 @@ const signup = async (req, res, next) =>{
 
     res.status(201).json({
       status: 'success',
+      token,
       data: {
         user: userCreated},
     });
@@ -88,7 +89,15 @@ const login = async(req,res, next) => {
 }
 
 
+const logout = (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Logged out successfully'
+  });
+};
+
+
 module.exports = {
-  signup,getAllusers,login,
+  signup,getAllusers,login, logout,
 };
 
