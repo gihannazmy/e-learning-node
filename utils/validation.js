@@ -333,19 +333,15 @@ const validateCourseMedia = [
     .isIn(['video', 'audio', 'document', 'image'])
     .withMessage('Type must be video, audio, document, or image'),
 
-  body('url')
-    .isURL()
-    .withMessage('Please provide a valid URL'),
-
   body('duration')
     .optional()
     .isInt({ min: 1 })
     .withMessage('Duration must be a positive integer'),
 
-  body('fileSize')
+  body('order')
     .optional()
-    .isInt({ min: 1 })
-    .withMessage('File size must be a positive integer'),
+    .isInt({ min: 0 })
+    .withMessage('Order must be a non-negative integer'),
 
   handleValidationErrors
 ];

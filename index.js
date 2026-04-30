@@ -26,9 +26,6 @@ const {
 
 const app = express();
 
-// Connect to database
-connectDB();
-
 // Security middleware
 app.use(setSecurityHeaders);
 
@@ -71,6 +68,9 @@ app.use(`${config.api.baseUrl}/course-exams`, courseExamRoutes);
 app.use(`${config.api.baseUrl}/exam-questions`, examQuestionRoutes);
 app.use(`${config.api.baseUrl}/exam-answers`, examAnswerRoutes);
 
+// Serve static files from uploads directory
+app.use('/uploads', express.static(config.fileUpload.path));
+
 //global handler
 app.use((err, req, res, next) => {
     console.error('Error:', err);
@@ -90,16 +90,22 @@ app.use((req, res) => {
   });
 });
 
-const server = app.listen(config.port, config.host, () => {
-  console.log(`Server running in ${config.env} mode on http://${config.host}:${config.port}`);
-});
+let server;
+if (require.main === module) {
+  connectDB();
+  server = app.listen(config.port, config.host, () => {
+    console.log(`Server running in ${config.env} mode on http://${config.host}:${config.port}`);
+  });
+}
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
   console.error('Unhandled Promise Rejection:', err.message);
-  server.close(() => {
-    process.exit(1);
-  });
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
 });
 
 // Handle uncaught exceptions
