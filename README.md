@@ -2,7 +2,9 @@
 
 The primary goal is to develop a Learning Management System (LMS) that provides a centralized, scalable environment for hosting, delivering, and tracking educational content. The platform aims to democratize access to learning by allowing users to engage with materials at their own pace, regardless of geographical constraints.
 
-Tecnologies : A Node.js REST API for an e-learning platform built with Express.js and MongoDB.
+## Tecnologies : 
+
+A Node.js REST API for an e-learning platform built with Express.js and MongoDB.
 
 ## Features
 
