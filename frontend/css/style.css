@@ -1,0 +1,39 @@
+:root{
+  --bg:#f6f8fb;
+  --primary:#4f46e5;
+  --muted:#6b7280;
+  --card:#ffffff;
+  --radius:12px;
+  --max-width:1100px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);margin:0;color:#111}
+.page-login{display:flex;min-height:100vh;align-items:stretch;justify-content:center;max-width:var(--max-width);margin:40px auto;padding:20px;gap:24px}
+.hero{flex:1;background:linear-gradient(135deg,#eef2ff 0%, #fff 100%);border-radius:var(--radius);padding:40px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.hero-img{width:100%;max-width:420px;margin-bottom:16px}
+.hero-text h1{font-size:28px;margin:0 0 8px}
+.hero-text p{margin:0;color:var(--muted)}
+.auth{width:380px;display:flex;align-items:center;justify-content:center}
+.auth-card{background:var(--card);border-radius:12px;padding:32px;width:100%;box-shadow:0 6px 20px rgba(15,23,42,0.06)}
+.logo{width:72px;height:72px;display:block;margin:0 auto 12px}
+h2{margin:0 0 8px;text-align:center}
+.muted{text-align:center;color:var(--muted);margin-bottom:18px}
+.form{display:flex;flex-direction:column;gap:12px}
+.label{display:flex;flex-direction:column;font-size:14px;color:#111}
+.label input{margin-top:8px;padding:12px;border:1px solid #e6e9ef;border-radius:8px;font-size:14px}
+.form-row{display:flex;align-items:center}
+.space-between{justify-content:space-between}
+.checkbox input{margin-right:8px}
+.link{color:var(--primary);text-decoration:none;font-size:14px}
+.btn{padding:12px;border-radius:10px;border:0;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.outline{background:transparent;border:1px solid #e6e9ef}
+.divider{display:flex;align-items:center;gap:12px;color:var(--muted);text-align:center;margin:12px 0}
+.divider::before,.divider::after{content:"";height:1px;background:#ecedf1;flex:1}
+.small{text-align:center;color:var(--muted);font-size:13px;margin-top:8px}
+
+@media(max-width:900px){
+  .page-login{flex-direction:column;padding:24px;margin:20px}
+  .hero{order:2;padding:20px;align-items:center;text-align:center}
+  .auth{width:100%}
+}

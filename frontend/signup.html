@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up — E‑Learning</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="page-login">
+    <aside class="hero">
+      <img src="assets/hero.svg" alt="hero illustration" class="hero-img">
+      <div class="hero-text">
+        <h1>Join our learning community</h1>
+        <p>Create an account and start learning today.</p>
+      </div>
+    </aside>
+
+    <section class="auth">
+      <div class="auth-card">
+        <img src="assets/logo.svg" alt="logo" class="logo">
+        <h2>Create account</h2>
+        <p class="muted">Sign up to access courses and exams</p>
+
+        <form id="signupForm" class="form" novalidate>
+          <label class="label">Full name
+            <input id="name" name="name" type="text" placeholder="Your name" required>
+          </label>
+
+          <label class="label">Email
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          </label>
+
+          <label class="label">Password
+            <input id="password" name="password" type="password" placeholder="••••••••" required>
+          </label>
+
+          <button type="submit" class="btn primary">Create account</button>
+
+          <p class="small">Already have an account? <a href="index.html">Sign in</a></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
