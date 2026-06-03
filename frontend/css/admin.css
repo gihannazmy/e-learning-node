@@ -1,0 +1,27 @@
+/* Admin-specific styles (Figma-inspired) */
+header.admin-header{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:18px auto;padding:12px 24px;background:transparent;}
+.admin-left{display:flex;align-items:center;gap:12px;}
+.admin-left .brand img{width:44px;height:44px;border-radius:10px;padding:6px;background:rgba(79,70,229,0.06);}
+.admin-search{flex:1;display:flex;align-items:center;gap:12px;background:var(--surface);padding:8px;border-radius:14px;border:1px solid var(--border);box-shadow:0 6px 24px rgba(15,23,42,0.04);}
+.admin-search input{flex:1;border:0;padding:10px;font-size:0.95rem;background:transparent;outline:none;color:var(--text);}
+.admin-actions{display:flex;align-items:center;gap:10px;}
+.user-menu{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:12px;background:var(--surface-soft);border:1px solid var(--border);}
+.user-avatar{width:40px;height:40px;border-radius:10px;overflow:hidden;display:inline-block}
+.user-avatar img{width:100%;height:100%;object-fit:cover}
+.badge{background:var(--primary);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:.85rem}
+
+.sidebar .nav-section{margin-bottom:18px}
+.sidebar .nav-section h3{margin:0 0 8px;font-size:0.9rem;color:var(--muted);font-weight:700}
+.resource-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px}
+.resource-link svg{width:18px;height:18px;opacity:0.9}
+
+.page-title .breadcrumb{font-size:0.9rem;color:var(--muted);margin-bottom:6px}
+.panel.card{padding:18px;background:var(--surface);border-radius:18px}
+.resource-grid .panel{min-height:240px}
+
+.form .field-row{display:flex;gap:10px}
+.form .field-row .label{flex:1}
+
+@media(max-width:960px){
+  .admin-search{display:none}
+}

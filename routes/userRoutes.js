@@ -12,6 +12,9 @@ router.post('/signup', validateUserSignup, signup);
 router.post('/login', validateUserLogin, login);
 router.get('/logout', logout);
 
+// Allow creating users via POST / (useful for admin UI)
+router.post('/', validateUserSignup, signup);
+
 //for testing only - should be protected in production
 router.get('/', protect, getAllusers);
 

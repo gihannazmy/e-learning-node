@@ -21,7 +21,8 @@ const {
   preventXSS,
   setSecurityHeaders,
   apiLimiter,
-  authLimiter
+  authLimiter,
+  corsOptions
 } = require('./utils/security');
 
 const app = express();
@@ -34,8 +35,8 @@ app.use('/api/', apiLimiter);
 app.use('/api/v1/users/login', authLimiter);
 app.use('/api/v1/users/signup', authLimiter);
 
-// CORS
-app.use(cors(config.cors));
+// CORS (use configured corsOptions)
+app.use(cors(corsOptions));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

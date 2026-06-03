@@ -111,6 +111,9 @@ const sanitizeObject = (obj) => {
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
+    // In development allow any origin to simplify local testing (localhost:5000 frontend).
+    if (config.isDevelopment()) return callback(null, true);
+
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 

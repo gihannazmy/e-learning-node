@@ -8,6 +8,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon .",
+    "serve-frontend": "npx serve frontend -l 5000",
+    "dev:full": "concurrently \"npm run dev\" \"npm run serve-frontend\"",
     "start": "NODE_ENV=production node .",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
@@ -30,6 +32,7 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "jest": "^30.3.0",
     "mongodb-memory-server": "^11.1.0",
     "supertest": "^7.2.2"

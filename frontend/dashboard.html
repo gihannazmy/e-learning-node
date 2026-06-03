@@ -6,40 +6,47 @@
   <title>Dashboard — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <header style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,0.04)">
-    <div style="display:flex;gap:12px;align-items:center">
-      <img src="assets/logo.svg" alt="logo" style="width:40px">
-      <strong>Dashboard</strong>
+<body data-page="dashboard">
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="logo">
+      <span>Dashboard</span>
     </div>
-    <div style="display:flex;gap:12px;align-items:center">
-      <a href="landing.html" class="link">Home</a>
-      <img src="assets/avatar.svg" alt="avatar" style="width:40px;border-radius:999px">
-    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="landing.html">Home</a>
+      <a class="nav-link" href="courses.html">Courses</a>
+      <a class="nav-link" href="exams.html">Exams</a>
+      <a class="nav-link" href="profile.html">Profile</a>
+      <a class="nav-link" href="index.html" id="signOutLink">Sign out</a>
+      <img src="assets/avatar.svg" alt="avatar">
+    </nav>
   </header>
 
-  <div style="display:flex;gap:24px;max-width:1100px;margin:28px auto;padding:0 20px">
-    <aside style="width:260px">
-      <div style="background:#fff;padding:16px;border-radius:12px">Courses</div>
-      <ul style="margin-top:12px;list-style:none;padding:0">
-        <li style="background:#fff;margin-top:8px;padding:12px;border-radius:10px">Intro to JavaScript</li>
-        <li style="background:#fff;margin-top:8px;padding:12px;border-radius:10px">CSS for Beginners</li>
-        <li style="background:#fff;margin-top:8px;padding:12px;border-radius:10px">Node.js APIs</li>
-      </ul>
-    </aside>
-
-    <main style="flex:1">
-      <div style="background:#fff;padding:20px;border-radius:12px"> 
-        <h2 style="margin:0 0 8px">Welcome back, Student</h2>
-        <p style="color:#6b7280;margin:0 0 12px">Resume your last course or browse new content.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
-          <div style="background:#eef2ff;padding:12px;border-radius:10px">JavaScript — Lesson 3</div>
-          <div style="background:#fff;padding:12px;border-radius:10px">CSS Grid — Lesson 1</div>
-          <div style="background:#fff;padding:12px;border-radius:10px">Node Streams</div>
+  <main class="page-dashboard">
+    <div class="dashboard-grid">
+      <aside class="dashboard-sidebar">
+        <div class="card">
+          <h2>Your courses</h2>
+          <ul class="course-list">
+            <li class="course-card"><strong>Intro to JavaScript</strong><p>Continue learning functions and events.</p></li>
+            <li class="course-card"><strong>CSS for Beginners</strong><p>Practice layouts, spacing, and responsive design.</p></li>
+            <li class="course-card"><strong>Node.js APIs</strong><p>Build backend routes and use MongoDB.</p></li>
+          </ul>
         </div>
-      </div>
-    </main>
-  </div>
-
+      </aside>
+      <section class="dashboard-main">
+        <div class="card">
+          <div class="section-title">Welcome back, Student</div>
+          <p>Resume your last course or discover recommended lessons.</p>
+          <div class="dashboard-summary">
+            <div class="summary-card"><strong>14</strong><span>Lessons completed</span></div>
+            <div class="summary-card"><strong>3</strong><span>New courses</span></div>
+            <div class="summary-card"><strong>84%</strong><span>Learning goal</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="js/site.js"></script>
 </body>
 </html>
