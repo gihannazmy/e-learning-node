@@ -8,17 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderCourseCard(course, options = {}) {
     const id = api.getCourseMongoId(course);
+    const title = api.getCourseTitle(course);
+    const dept = course.departmentId?.departmentName || course.departmentId?.name || course.departmentId || 'General';
     const card = document.createElement('div');
     card.className = 'course-card';
     const enrollBtn = options.showEnroll
-      ? `<button type="button" class="btn outline btn-enroll" data-course-id="${id}">Enroll</button>`
+      ? `<button type="button" class="btn primary small btn-enroll" data-course-id="${id}">Enroll now</button>`
       : '';
     card.innerHTML = `
-      <strong>${api.getCourseTitle(course)}</strong>
-      <p>${course.description || 'No description available.'}</p>
-      <p><small>Department: ${course.departmentId?.departmentName || course.departmentId?.name || course.departmentId || 'N/A'}</small></p>
+      <div class="course-card__head">
+        <div class="course-card__icon">${api.getCourseInitial(title)}</div>
+        <span class="badge badge--primary">${dept}</span>
+      </div>
+      <strong>${title}</strong>
+      <p>${course.description || 'Explore lessons, media, and exams in this course.'}</p>
       <div class="card-actions">
-        <a class="btn outline" href="course-detail.html?id=${id}">View details</a>
+        <a class="btn outline small" href="course-detail.html?id=${id}">View details</a>
         ${enrollBtn}
       </div>
     `;
@@ -58,13 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadCourses() {
     const container = document.getElementById('coursesContainer');
     if (!container) return;
-    container.innerHTML = '<p>Loading courses…</p>';
+    container.innerHTML = api.renderLoadingSkeletons(3);
     try {
       const result = await api.fetchJson('/courses');
       const courses = api.normalizeList(result);
       container.innerHTML = '';
+      container.classList.add('course-list--grid');
       if (!courses.length) {
-        container.innerHTML = '<p>No courses available yet.</p>';
+        container.innerHTML = api.renderEmptyState('No courses available yet. Check back soon.');
         return;
       }
       courses.forEach((course) => container.appendChild(renderCourseCard(course, { showEnroll: true })));
@@ -87,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const coursesContainer = document.querySelector('.course-list');
     const summary = document.querySelector('.dashboard-summary');
     const user = api.loadUser();
-    const greeting = document.querySelector('.section-title');
+    const greeting = document.querySelector('.page-hero-inner h1, .page-hero-inner .section-title');
     if (greeting && user) greeting.textContent = `Welcome back, ${user.name || 'Student'}`;
 
     const [allCourses, enrollments] = await Promise.all([
@@ -103,16 +109,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const displayCourses = enrolledCourses.length ? enrolledCourses : allCourses.slice(0, 4);
       if (!displayCourses.length) {
-        coursesContainer.innerHTML = '<li class="course-card"><strong>No courses yet.</strong><p>Browse the catalog to enroll.</p></li>';
+        coursesContainer.innerHTML = `<li>${api.renderEmptyState('No courses yet. Browse the catalog to enroll.', '🎯')}</li>`;
       } else {
         displayCourses.slice(0, 5).forEach((course) => {
           const id = api.getCourseMongoId(course);
+          const title = api.getCourseTitle(course);
           const li = document.createElement('li');
           li.className = 'course-card';
           li.innerHTML = `
-            <strong>${api.getCourseTitle(course)}</strong>
+            <div class="course-card__head">
+              <div class="course-card__icon">${api.getCourseInitial(title)}</div>
+            </div>
+            <strong>${title}</strong>
             <p>${course.description || 'Continue learning.'}</p>
-            <a class="btn outline small" href="course-detail.html?id=${id}">Continue</a>
+            <div class="card-actions">
+              <a class="btn primary small" href="course-detail.html?id=${id}">Continue</a>
+            </div>
           `;
           coursesContainer.appendChild(li);
         });
@@ -124,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? Math.round(enrollments.reduce((sum, e) => sum + (e.progress || 0), 0) / enrollments.length)
         : 0;
       summary.innerHTML = `
-        <div class="summary-card"><strong>${enrollments.length}</strong><span>Enrolled courses</span></div>
+        <div class="summary-card summary-card--primary"><strong>${enrollments.length}</strong><span>Enrolled courses</span></div>
         <div class="summary-card"><strong>${allCourses.length}</strong><span>Available courses</span></div>
         <div class="summary-card"><strong>${avgProgress || 0}%</strong><span>Average progress</span></div>
       `;
@@ -285,12 +297,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('div');
     card.className = 'course-card';
     card.innerHTML = `
+      <div class="course-card__head">
+        <div class="course-card__icon">✎</div>
+        <span class="badge badge--soft">Exam</span>
+      </div>
       <strong>${exam.title}</strong>
-      <p>${exam.description || 'No description available.'}</p>
+      <p>${exam.description || 'Complete this assessment to test your knowledge.'}</p>
       <p><small>Marks: ${exam.minDegree || 0}–${exam.maxDegree || exam.totalMarks || 0}</small></p>
       <div class="card-actions">
-        <a class="btn primary" href="exam-take.html?id=${exam._id}">Take exam</a>
-        <a class="btn outline" href="exam-results.html?examId=${exam._id}">View results</a>
+        <a class="btn primary small" href="exam-take.html?id=${exam._id}">Take exam</a>
+        <a class="btn outline small" href="exam-results.html?examId=${exam._id}">View results</a>
       </div>
     `;
     return card;
@@ -299,13 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadExams() {
     const container = document.getElementById('examsContainer');
     if (!container) return;
-    container.innerHTML = '<p>Loading exams…</p>';
+    container.innerHTML = api.renderLoadingSkeletons(2);
     try {
       const result = await api.fetchJson('/course-exams');
       const exams = api.normalizeList(result);
       container.innerHTML = '';
+      container.classList.add('course-list--grid');
       if (!exams.length) {
-        container.innerHTML = '<p>No exams published yet.</p>';
+        container.innerHTML = api.renderEmptyState('No exams published yet.', '📝');
         return;
       }
       exams.forEach((exam) => container.appendChild(renderExamCard(exam)));
