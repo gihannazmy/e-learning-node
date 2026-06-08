@@ -186,8 +186,7 @@ const ElearningAPI = (() => {
     nav.innerHTML = links
       .filter((link) => link.roles.includes(role))
       .map((link) => `<a class="nav-link${activePage === link.key ? ' active' : ''}" href="${link.href}">${link.label}</a>`)
-      .join('')
-      + `<a class="nav-link" href="#" id="signOutLink">Sign out</a>`;
+      .join('');
 
     const signOutLink = document.getElementById('signOutLink');
     if (signOutLink) {
@@ -199,6 +198,22 @@ const ElearningAPI = (() => {
 
     const userLabel = document.getElementById('navUserName');
     if (userLabel && user) userLabel.textContent = user.name || 'User';
+  }
+
+  function renderLoadingSkeletons(count = 3) {
+    return Array.from({ length: count }, () => '<div class="skeleton skeleton-card"></div>').join('');
+  }
+
+  function renderEmptyState(message, icon = '📚') {
+    return `
+      <div class="empty-state">
+        <div class="empty-state__icon">${icon}</div>
+        <p>${message}</p>
+      </div>`;
+  }
+
+  function getCourseInitial(title) {
+    return (title || 'C').trim().charAt(0).toUpperCase();
   }
 
   async function checkHealth() {
@@ -248,6 +263,9 @@ const ElearningAPI = (() => {
     showMessage,
     showToast,
     renderNav,
-    checkHealth
+    checkHealth,
+    renderLoadingSkeletons,
+    renderEmptyState,
+    getCourseInitial
   };
 })();

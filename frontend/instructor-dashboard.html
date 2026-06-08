@@ -5,37 +5,50 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Instructor Dashboard — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body data-page="instructor" data-nav="instructor">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Instructor</span>
+      <span>E‑Learning</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
-    <span class="nav-user" id="navUserName"></span>
-    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+    <div class="header-actions">
+      <span class="nav-user" id="navUserName"></span>
+      <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+      <a class="nav-link" href="#" id="signOutLink">Sign out</a>
+    </div>
   </header>
+
+  <section class="page-hero page-hero--compact">
+    <div class="page-hero-inner">
+      <h1 id="instructorGreeting">Instructor Dashboard</h1>
+      <p>Overview of your courses, lessons, exams, and uploaded media.</p>
+    </div>
+  </section>
 
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
-        <div class="section-title" id="instructorGreeting">Instructor Dashboard</div>
-        <p>Overview of your courses, lessons, exams, and media.</p>
+        <div class="section-title">Content overview</div>
         <div class="dashboard-summary" id="instructorStats"></div>
-        <div class="cta-row" style="margin-top:20px">
-          <a class="btn primary" href="admin.html">Manage content (Admin panel)</a>
+        <div class="cta-row" style="margin-top:22px">
+          <a class="btn primary" href="admin.html">Manage content</a>
           <a class="btn outline" href="courses.html">View courses</a>
         </div>
       </div>
 
       <div class="card">
-        <h2>Your courses</h2>
+        <h2>📚 Your courses</h2>
         <div id="instructorCourses" class="course-list"></div>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <span>© 2026 E‑Learning Platform</span>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/site.js"></script>

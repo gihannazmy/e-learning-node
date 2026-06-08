@@ -5,17 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lesson — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body data-page="course-lesson" data-nav="courses">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Lesson</span>
+      <span>E‑Learning</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
-    <span class="nav-user" id="navUserName"></span>
-    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+    <div class="header-actions">
+      <span class="nav-user" id="navUserName"></span>
+      <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+      <a class="nav-link" href="#" id="signOutLink">Sign out</a>
+    </div>
   </header>
 
   <main class="page-dashboard">
@@ -27,6 +30,10 @@
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <span>© 2026 E‑Learning Platform</span>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/site.js"></script>

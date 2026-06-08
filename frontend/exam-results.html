@@ -5,28 +5,41 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Exam Results — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body data-page="exam-results" data-nav="results">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Results</span>
+      <span>E‑Learning</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
-    <span class="nav-user" id="navUserName"></span>
-    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+    <div class="header-actions">
+      <span class="nav-user" id="navUserName"></span>
+      <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+      <a class="nav-link" href="#" id="signOutLink">Sign out</a>
+    </div>
   </header>
+
+  <section class="page-hero page-hero--compact">
+    <div class="page-hero-inner">
+      <h1>Exam results</h1>
+      <p>Review your submitted scores and exam history.</p>
+    </div>
+  </section>
 
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
-        <div class="section-title">Exam Results</div>
-        <p>Your submitted exam scores and history.</p>
         <div id="resultsContainer" class="course-list"></div>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <span>© 2026 E‑Learning Platform</span>
+    <span><a href="exams.html">Back to exams</a></span>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/site.js"></script>

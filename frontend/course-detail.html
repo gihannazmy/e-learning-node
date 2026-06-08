@@ -5,45 +5,58 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Course Detail — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body data-page="course-detail" data-nav="courses">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Course Detail</span>
+      <span>E‑Learning</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
-    <span class="nav-user" id="navUserName"></span>
-    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+    <div class="header-actions">
+      <span class="nav-user" id="navUserName"></span>
+      <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+      <a class="nav-link" href="#" id="signOutLink">Sign out</a>
+    </div>
   </header>
+
+  <section class="page-hero page-hero--compact">
+    <div class="page-hero-inner">
+      <h1 id="courseTitle">Loading course…</h1>
+      <p id="courseDescription"></p>
+    </div>
+  </section>
 
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
-        <div class="section-title" id="courseTitle">Course loading...</div>
-        <p id="courseDescription"></p>
         <div id="courseMessage"></div>
         <div class="card-actions" id="courseActions"></div>
         <div class="course-card" id="courseMeta"></div>
       </div>
 
       <div class="card">
-        <h2>Lessons</h2>
+        <h2>📖 Lessons</h2>
         <div id="courseLessons" class="lesson-list"></div>
       </div>
 
       <div class="card">
-        <h2>Media</h2>
+        <h2>🎬 Media</h2>
         <div id="courseMedia" class="media-list"></div>
       </div>
 
       <div class="card">
-        <h2>Exams</h2>
+        <h2>📝 Exams</h2>
         <div id="courseExams" class="exam-list"></div>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <span>© 2026 E‑Learning Platform</span>
+    <span><a href="courses.html">Back to catalog</a></span>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/site.js"></script>

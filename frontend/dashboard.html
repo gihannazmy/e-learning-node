@@ -5,33 +5,43 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body data-page="dashboard" data-nav="dashboard">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Dashboard</span>
+      <span>E‑Learning</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
-    <span class="nav-user" id="navUserName"></span>
-    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+    <div class="header-actions">
+      <span class="nav-user" id="navUserName"></span>
+      <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
+      <a class="nav-link" href="#" id="signOutLink">Sign out</a>
+    </div>
   </header>
+
+  <section class="page-hero page-hero--compact">
+    <div class="page-hero-inner">
+      <h1 class="section-title">Welcome back, Student</h1>
+      <p>Pick up where you left off or discover a new course today.</p>
+    </div>
+  </section>
 
   <main class="page-dashboard">
     <div class="dashboard-grid">
       <aside class="dashboard-sidebar">
         <div class="card">
-          <h2>Your courses</h2>
+          <h2>📚 Your courses</h2>
           <ul class="course-list"></ul>
         </div>
       </aside>
       <section class="dashboard-main">
         <div class="card">
-          <div class="section-title">Welcome back, Student</div>
-          <p>Resume your enrolled courses or browse the catalog for new ones.</p>
+          <div class="section-title">Learning overview</div>
+          <p class="section-subtitle">Your activity at a glance.</p>
           <div class="dashboard-summary"></div>
-          <div class="cta-row" style="margin-top:20px">
+          <div class="cta-row" style="margin-top:22px">
             <a class="btn primary" href="courses.html">Browse courses</a>
             <a class="btn outline" href="exams.html">View exams</a>
           </div>
@@ -39,6 +49,12 @@
       </section>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <span>© 2026 E‑Learning Platform</span>
+    <span><a href="profile.html">Profile</a> · <a href="courses.html">Courses</a></span>
+  </footer>
+
   <script src="js/api.js"></script>
   <script src="js/site.js"></script>
 </body>

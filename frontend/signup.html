@@ -5,15 +5,26 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sign Up — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="logo">
+      <span>E‑Learning</span>
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link" href="landing.html">Home</a>
+      <a class="nav-link" href="index.html">Sign in</a>
+    </nav>
+  </header>
+
   <main class="page-login">
     <aside class="hero">
       <img src="assets/hero.svg" alt="hero illustration" class="hero-img">
       <div class="hero-text">
         <h1>Join our learning community</h1>
-        <p>Create an account and start learning today.</p>
+        <p>Create an account and unlock courses, exams, and personalized progress tracking.</p>
       </div>
     </aside>
 
@@ -33,7 +44,7 @@
           </label>
 
           <label class="label">Password
-            <input id="password" name="password" type="password" placeholder="••••••••" required>
+            <input id="password" name="password" type="password" placeholder="Min. 6 chars, upper, lower, digit" required>
           </label>
 
           <button type="submit" class="btn primary">Create account</button>
