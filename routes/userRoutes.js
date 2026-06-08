@@ -3,19 +3,32 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require('../models/user');
-const {signup, getAllusers, login, logout} = require('../controllers/authController');
-const { protect } = require('../utils/auth');
-const { validateUserSignup, validateUserLogin } = require('../utils/validation');
+const {
+  signup,
+  getAllusers,
+  login,
+  logout,
+  getUser,
+  updateUser,
+  deleteUser
+} = require('../controllers/authController');
+const { protect, restrictTo } = require('../utils/auth');
+const {
+  validateUserSignup,
+  validateUserLogin,
+  validateUserId,
+  validateUserUpdate
+} = require('../utils/validation');
 
 router.post('/signup', validateUserSignup, signup);
 router.post('/login', validateUserLogin, login);
 router.get('/logout', logout);
 
-// Allow creating users via POST / (useful for admin UI)
-router.post('/', validateUserSignup, signup);
+router.post('/', protect, restrictTo('admin'), validateUserSignup, signup);
 
-//for testing only - should be protected in production
-router.get('/', protect, getAllusers);
+router.get('/', protect, restrictTo('admin'), getAllusers);
+router.get('/:id', protect, restrictTo('admin'), validateUserId, getUser);
+router.put('/:id', protect, restrictTo('admin'), validateUserUpdate, updateUser);
+router.delete('/:id', protect, restrictTo('admin'), validateUserId, deleteUser);
 
 module.exports = router;

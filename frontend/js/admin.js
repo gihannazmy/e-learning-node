@@ -1,6 +1,5 @@
 const state = {
   apiUrl: localStorage.getItem('adminApiUrl') || 'http://localhost:3000/api/v1',
-  // Accept either adminAuthToken (explicit) or the general elearningAuthToken from login
   authToken: localStorage.getItem('adminAuthToken') || localStorage.getItem('elearningAuthToken') || '',
   resource: 'users',
   resources: {
@@ -8,127 +7,156 @@ const state = {
       label: 'Users',
       endpoint: 'users',
       fields: [
-        {name: 'name', type: 'text', label: 'Name', required: true},
-        {name: 'email', type: 'email', label: 'Email', required: true},
-        {name: 'password', type: 'password', label: 'Password', required: true},
-        {name: 'role', type: 'text', label: 'Role', required: true, placeholder: 'student/instructor/admin'}
+        { name: 'name', type: 'text', label: 'Name', required: true },
+        { name: 'email', type: 'email', label: 'Email', required: true },
+        { name: 'password', type: 'password', label: 'Password', required: true },
+        { name: 'role', type: 'select', label: 'Role', required: true, options: ['student', 'instructor', 'admin'] }
       ]
     },
     courses: {
       label: 'Courses',
       endpoint: 'courses',
       fields: [
-        {name: 'title', type: 'text', label: 'Title', required: true},
-        {name: 'description', type: 'text', label: 'Description', required: true},
-        {name: 'departmentId', type: 'text', label: 'Department ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'instructorId', type: 'text', label: 'Instructor ID', placeholder: 'Mongo ID'},
-        {name: 'duration', type: 'number', label: 'Duration (days)'},
-        {name: 'price', type: 'number', label: 'Price'},
-        {name: 'level', type: 'text', label: 'Level', placeholder: 'beginner/intermediate/advanced'}
+        { name: 'title', type: 'text', label: 'Title', required: true },
+        { name: 'description', type: 'text', label: 'Description', required: true },
+        { name: 'departmentId', type: 'select', label: 'Department', required: true, reference: 'departments' },
+        { name: 'instructorId', type: 'select', label: 'Instructor', reference: 'instructors' },
+        { name: 'duration', type: 'number', label: 'Duration (days)' },
+        { name: 'price', type: 'number', label: 'Price' },
+        { name: 'level', type: 'select', label: 'Level', options: ['beginner', 'intermediate', 'advanced'] }
       ]
     },
     departments: {
       label: 'Departments',
       endpoint: 'departments',
       fields: [
-        {name: 'name', type: 'text', label: 'Department Name', required: true},
-        {name: 'description', type: 'text', label: 'Description'},
-        {name: 'headId', type: 'text', label: 'Head User ID', placeholder: 'Mongo ID'}
+        { name: 'name', type: 'text', label: 'Department Name', required: true },
+        { name: 'description', type: 'text', label: 'Description' },
+        { name: 'headId', type: 'select', label: 'Head User', reference: 'users' }
       ]
     },
     instructors: {
       label: 'Instructors',
       endpoint: 'instructors',
       fields: [
-        {name: 'userId', type: 'text', label: 'User ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'specialization', type: 'text', label: 'Specialization'},
-        {name: 'bio', type: 'text', label: 'Bio'},
-        {name: 'experience', type: 'number', label: 'Experience (years)'}
+        { name: 'userId', type: 'select', label: 'User', required: true, reference: 'users' },
+        { name: 'specialization', type: 'text', label: 'Specialization' },
+        { name: 'bio', type: 'text', label: 'Bio' },
+        { name: 'experience', type: 'number', label: 'Experience (years)' }
       ]
     },
     students: {
       label: 'Students',
       endpoint: 'students',
       fields: [
-        {name: 'userId', type: 'text', label: 'User ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'enrollmentYear', type: 'number', label: 'Enrollment Year'},
-        {name: 'gpa', type: 'number', label: 'GPA', step: '0.01'}
+        { name: 'userId', type: 'select', label: 'User', required: true, reference: 'users' },
+        { name: 'enrollmentYear', type: 'number', label: 'Enrollment Year' },
+        { name: 'gpa', type: 'number', label: 'GPA', step: '0.01' }
       ]
     },
     'student-courses': {
       label: 'Student Courses',
       endpoint: 'student-courses',
       fields: [
-        {name: 'studentId', type: 'text', label: 'Student ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'courseId', type: 'text', label: 'Course ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'enrollmentDate', type: 'date', label: 'Enrollment Date'},
-        {name: 'completionStatus', type: 'text', label: 'Completion Status', placeholder: 'not-started/in-progress/completed'},
-        {name: 'progress', type: 'number', label: 'Progress (%)'}
+        { name: 'studentId', type: 'select', label: 'Student', required: true, reference: 'students' },
+        { name: 'courseId', type: 'select', label: 'Course', required: true, reference: 'courses' },
+        { name: 'enrollmentDate', type: 'date', label: 'Enrollment Date' },
+        { name: 'completionStatus', type: 'select', label: 'Completion Status', options: ['not-started', 'in-progress', 'completed'] },
+        { name: 'progress', type: 'number', label: 'Progress (%)' }
       ]
     },
     'course-details': {
       label: 'Course Details',
       endpoint: 'course-details',
       fields: [
-        {name: 'courseId', type: 'text', label: 'Course ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'title', type: 'text', label: 'Title', required: true},
-        {name: 'content', type: 'text', label: 'Content', required: true},
-        {name: 'contentType', type: 'text', label: 'Content Type', placeholder: 'text/video/quiz/assignment', required: true},
-        {name: 'order', type: 'number', label: 'Order', required: true},
-        {name: 'duration', type: 'number', label: 'Duration (minutes)'}
+        { name: 'courseId', type: 'select', label: 'Course', required: true, reference: 'courses' },
+        { name: 'title', type: 'text', label: 'Title', required: true },
+        { name: 'content', type: 'text', label: 'Content', required: true },
+        { name: 'contentType', type: 'select', label: 'Content Type', required: true, options: ['text', 'video', 'quiz', 'assignment'] },
+        { name: 'order', type: 'number', label: 'Order', required: true },
+        { name: 'duration', type: 'number', label: 'Duration (minutes)' }
       ]
     },
     'course-exams': {
       label: 'Course Exams',
       endpoint: 'course-exams',
       fields: [
-        {name: 'courseId', type: 'text', label: 'Course ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'title', type: 'text', label: 'Title', required: true},
-        {name: 'description', type: 'text', label: 'Description'},
-        {name: 'duration', type: 'number', label: 'Duration (minutes)', required: true},
-        {name: 'totalMarks', type: 'number', label: 'Total Marks', required: true},
-        {name: 'passingMarks', type: 'number', label: 'Passing Marks'},
-        {name: 'examDate', type: 'date', label: 'Exam Date'}
+        { name: 'courseId', type: 'select', label: 'Course', required: true, reference: 'courses' },
+        { name: 'title', type: 'text', label: 'Title', required: true },
+        { name: 'description', type: 'text', label: 'Description' },
+        { name: 'duration', type: 'number', label: 'Duration (minutes)', required: true },
+        { name: 'totalMarks', type: 'number', label: 'Total Marks', required: true },
+        { name: 'passingMarks', type: 'number', label: 'Passing Marks' },
+        { name: 'examDate', type: 'date', label: 'Exam Date' }
       ]
     },
     'exam-questions': {
       label: 'Exam Questions',
       endpoint: 'exam-questions',
       fields: [
-        {name: 'examId', type: 'text', label: 'Exam ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'question', type: 'text', label: 'Question', required: true},
-        {name: 'questionType', type: 'text', label: 'Question Type', placeholder: 'multiple-choice/true-false/short-answer', required: true},
-        {name: 'options', type: 'text', label: 'Options (comma separated)'},
-        {name: 'correctAnswer', type: 'text', label: 'Correct Answer'},
-        {name: 'marks', type: 'number', label: 'Marks', required: true}
+        { name: 'examId', type: 'select', label: 'Exam', required: true, reference: 'course-exams' },
+        { name: 'question', type: 'text', label: 'Question', required: true },
+        { name: 'questionType', type: 'select', label: 'Question Type', required: true, options: ['multiple-choice', 'true-false', 'short-answer'] },
+        { name: 'options', type: 'text', label: 'Options (comma separated)' },
+        { name: 'correctAnswer', type: 'text', label: 'Correct Answer' },
+        { name: 'marks', type: 'number', label: 'Marks', required: true }
       ]
     },
     'exam-answers': {
       label: 'Exam Answers',
       endpoint: 'exam-answers',
       fields: [
-        {name: 'examId', type: 'text', label: 'Exam ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'studentId', type: 'text', label: 'Student ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'answers', type: 'text', label: 'Answers (comma separated)', required: true},
-        {name: 'totalScore', type: 'number', label: 'Total Score'}
+        { name: 'examId', type: 'select', label: 'Exam', required: true, reference: 'course-exams' },
+        { name: 'studentId', type: 'select', label: 'Student', required: true, reference: 'students' },
+        { name: 'answers', type: 'text', label: 'Answers (comma separated)', required: true },
+        { name: 'totalScore', type: 'number', label: 'Total Score' }
       ]
     },
     'course-media': {
       label: 'Course Media',
       endpoint: 'course-media',
       fields: [
-        {name: 'courseId', type: 'text', label: 'Course ID', required: true, placeholder: 'Mongo ID'},
-        {name: 'title', type: 'text', label: 'Title', required: true},
-        {name: 'description', type: 'text', label: 'Description'},
-        {name: 'type', type: 'text', label: 'Media Type', placeholder: 'video/audio/document/image', required: true},
-        {name: 'duration', type: 'number', label: 'Duration (seconds)'},
-        {name: 'order', type: 'number', label: 'Order'},
-        {name: 'file', type: 'file', label: 'File'}
+        { name: 'courseId', type: 'select', label: 'Course', required: true, reference: 'courses' },
+        { name: 'title', type: 'text', label: 'Title', required: true },
+        { name: 'description', type: 'text', label: 'Description' },
+        { name: 'type', type: 'select', label: 'Media Type', required: true, options: ['video', 'audio', 'document', 'image'] },
+        { name: 'duration', type: 'number', label: 'Duration (seconds)' },
+        { name: 'order', type: 'number', label: 'Order' },
+        { name: 'file', type: 'file', label: 'File' }
       ],
       uploadPath: 'course-media'
     }
   }
 };
+
+const referenceCatalog = {
+  users: {
+    endpoint: 'users',
+    label: (item) => `${item.name || item.email || 'User'} (${getRecordId(item)})`
+  },
+  departments: {
+    endpoint: 'departments',
+    label: (item) => `${item.departmentName || item.name || 'Department'} (${getRecordId(item)})`
+  },
+  courses: {
+    endpoint: 'courses',
+    label: (item) => `${item.title || item.courseName || 'Course'} (${getRecordId(item)})`
+  },
+  instructors: {
+    endpoint: 'instructors',
+    label: (item) => `${item.instructorName || item.specialization || 'Instructor'} (${getRecordId(item)})`
+  },
+  students: {
+    endpoint: 'students',
+    label: (item) => `${item.studentName || item.userId?.name || item.userId?.email || 'Student'} (${getRecordId(item)})`
+  },
+  'course-exams': {
+    endpoint: 'course-exams',
+    label: (item) => `${item.title || 'Exam'} (${getRecordId(item)})`
+  }
+};
+
+const optionsCache = {};
 
 const elements = {
   resourceNav: document.getElementById('resourceNav'),
@@ -156,6 +184,8 @@ elements.clearCache = document.getElementById('clearCache');
 elements.loginEmail = document.getElementById('loginEmail');
 elements.loginPassword = document.getElementById('loginPassword');
 elements.loginBtn = document.getElementById('loginBtn');
+elements.logoutBtn = document.getElementById('logoutBtn');
+elements.adminActions = document.getElementById('adminActions');
 
 function setMessage(message, type = 'info') {
   elements.resourceMessage.textContent = message;
@@ -196,19 +226,119 @@ function getFetchUrl(path) {
   return `${state.apiUrl}/${path}`;
 }
 
+function getRecordId(record) {
+  if (!record) return '';
+  if (typeof record === 'string') return record;
+  return record._id || record.id || '';
+}
+
+function clearOptionsCache() {
+  Object.keys(optionsCache).forEach((key) => delete optionsCache[key]);
+}
+
+async function loadReferenceOptions(referenceKey) {
+  if (optionsCache[referenceKey]) return optionsCache[referenceKey];
+  const config = referenceCatalog[referenceKey];
+  if (!config) return [];
+
+  const response = await fetch(getFetchUrl(config.endpoint), { headers: getHeaders() });
+  const data = await parseResponse(response);
+  const list = normalizeList(data);
+  optionsCache[referenceKey] = list;
+  return list;
+}
+
+function resolveReferenceValue(item, fieldName) {
+  if (!item) return '';
+  const value = item[fieldName];
+  if (value && typeof value === 'object') {
+    return getRecordId(value);
+  }
+  return value ?? '';
+}
+
+function createSelectField(field, item) {
+  const select = document.createElement('select');
+  select.name = field.name;
+  select.className = 'admin-select';
+  if (field.required && !(item && field.name === 'password')) select.required = true;
+
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = field.required ? `Select ${field.label}` : 'None';
+  select.appendChild(placeholder);
+
+  return select;
+}
+
+async function fillReferenceSelect(select, field, item) {
+  try {
+    const options = await loadReferenceOptions(field.reference);
+    options.forEach((optionItem) => {
+      const option = document.createElement('option');
+      option.value = getRecordId(optionItem);
+      option.textContent = referenceCatalog[field.reference].label(optionItem);
+      select.appendChild(option);
+    });
+  } catch (error) {
+    const failOption = document.createElement('option');
+    failOption.value = '';
+    failOption.textContent = 'Unable to load options';
+    select.appendChild(failOption);
+  }
+
+  const selected = resolveReferenceValue(item, field.name);
+  if (selected) select.value = String(selected);
+}
+
+function fillStaticSelect(select, field, item) {
+  field.options.forEach((value) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+
+  const selected = item?.[field.name];
+  if (selected !== undefined && selected !== null && selected !== '') {
+    select.value = String(selected);
+  }
+}
+
+function normalizeList(result) {
+  if (Array.isArray(result)) return result;
+  if (Array.isArray(result?.users)) return result.users;
+  if (Array.isArray(result?.data?.courseMedias)) return result.data.courseMedias;
+  if (Array.isArray(result?.data?.courses)) return result.data.courses;
+  if (Array.isArray(result?.data)) return result.data;
+  if (result?.data && typeof result.data === 'object') {
+    const nested = Object.values(result.data).find(Array.isArray);
+    if (nested) return nested;
+  }
+  return [];
+}
+
+function formatCellValue(value) {
+  if (value === undefined || value === null) return '';
+  if (typeof value === 'object') {
+    return value.departmentName || value.name || value.title || value.email || value._id || JSON.stringify(value);
+  }
+  return String(value);
+}
+
 async function fetchList() {
   setMessage('Loading records...', 'info');
   const endpoint = state.resources[state.resource].endpoint;
-  const path = state.resource === 'course-media' ? endpoint : endpoint;
   try {
-    const response = await fetch(getFetchUrl(path), {headers: getHeaders()});
+    const response = await fetch(getFetchUrl(endpoint), { headers: getHeaders() });
     const data = await parseResponse(response);
-    const list = data.data || data;
+    const list = normalizeList(data);
     renderList(list);
-    setMessage(`Loaded ${Array.isArray(list) ? list.length : 0} records.`, 'success');
+    setMessage(`Loaded ${list.length} records.`, 'success');
   } catch (error) {
     console.error(error);
-    setMessage(error.message || JSON.stringify(error), 'error');
+    const message = error.message || error.error || JSON.stringify(error);
+    setMessage(message, 'error');
     elements.resourceList.innerHTML = '<p class="muted">Unable to load records.</p>';
   }
 }
@@ -239,7 +369,7 @@ function renderList(items) {
     const row = document.createElement('tr');
     fields.forEach((field) => {
       const td = document.createElement('td');
-      td.textContent = item[field] === undefined ? '' : item[field];
+      td.textContent = formatCellValue(item[field]);
       row.appendChild(td);
     });
     const actions = document.createElement('td');
@@ -248,7 +378,7 @@ function renderList(items) {
     edit.type = 'button';
     edit.className = 'btn outline small';
     edit.textContent = 'Edit';
-    edit.addEventListener('click', () => populateForm(item));
+    edit.addEventListener('click', () => void populateForm(item));
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'btn outline small danger';
@@ -264,40 +394,64 @@ function renderList(items) {
   elements.resourceList.appendChild(table);
 }
 
-function populateForm(item = null) {
+async function populateForm(item = null) {
   const fields = state.resources[state.resource].fields;
   elements.resourceForm.innerHTML = '';
   const formHeading = document.createElement('h3');
   formHeading.textContent = item ? 'Update record' : 'Create record';
   elements.resourceForm.appendChild(formHeading);
 
-  fields.forEach((field) => {
+  for (const field of fields) {
     const fieldWrapper = document.createElement('label');
     fieldWrapper.className = 'label';
     fieldWrapper.textContent = field.label;
-    const input = document.createElement('input');
-    input.name = field.name;
-    input.type = field.type;
-    input.placeholder = field.placeholder || '';
-    if (field.step) input.step = field.step;
-    if (field.required) input.required = true;
-    if (field.type === 'checkbox') {
+
+    if (field.type === 'select') {
+      const select = createSelectField(field, item);
+      if (field.reference) {
+        await fillReferenceSelect(select, field, item);
+      } else if (field.options) {
+        fillStaticSelect(select, field, item);
+      }
+      fieldWrapper.appendChild(select);
+    } else if (field.type === 'checkbox') {
+      const input = document.createElement('input');
+      input.name = field.name;
+      input.type = 'checkbox';
       input.checked = item ? !!item[field.name] : false;
       fieldWrapper.appendChild(input);
+    } else if (field.type === 'file') {
+      const input = document.createElement('input');
+      input.name = field.name;
+      input.type = 'file';
+      fieldWrapper.appendChild(input);
     } else {
+      const input = document.createElement('input');
+      input.name = field.name;
+      input.type = field.type;
+      input.placeholder = field.placeholder || (item && field.name === 'password' ? 'Leave blank to keep unchanged' : '');
+      if (field.step) input.step = field.step;
+      if (field.required && !(item && field.name === 'password')) input.required = true;
       if (item && item[field.name] !== undefined && item[field.name] !== null) {
-        input.value = field.type === 'date' ? item[field.name].substring(0, 10) : item[field.name];
+        if (Array.isArray(item[field.name])) {
+          input.value = item[field.name].join(', ');
+        } else if (field.type === 'date') {
+          input.value = String(item[field.name]).substring(0, 10);
+        } else {
+          input.value = item[field.name];
+        }
       }
       fieldWrapper.appendChild(input);
     }
     elements.resourceForm.appendChild(fieldWrapper);
-  });
+  }
 
-  if (item && item._id) {
+  const recordId = item ? getRecordId(item) : '';
+  if (recordId) {
     const idInput = document.createElement('input');
     idInput.type = 'hidden';
     idInput.name = 'recordId';
-    idInput.value = item._id;
+    idInput.value = recordId;
     elements.resourceForm.appendChild(idInput);
   }
 
@@ -387,8 +541,9 @@ async function saveResource(event) {
 
     await parseResponse(response);
     setMessage(`${id ? 'Updated' : 'Created'} record successfully`, 'success');
+    clearOptionsCache();
     fetchList();
-    populateForm();
+    void populateForm();
   } catch (error) {
     setMessage(error.message || JSON.stringify(error), 'error');
   }
@@ -412,12 +567,12 @@ async function deleteItem(id) {
 }
 
 function resetForm() {
-  populateForm();
+  void populateForm();
 }
 
 function saveToken() {
-  state.apiUrl = elements.apiUrl.value.trim();
-  state.authToken = elements.authToken.value.trim();
+  if (elements.apiUrl) state.apiUrl = elements.apiUrl.value.trim() || state.apiUrl;
+  if (elements.authToken) state.authToken = elements.authToken.value.trim();
   localStorage.setItem('adminApiUrl', state.apiUrl);
   localStorage.setItem('adminAuthToken', state.authToken);
   setMessage('Saved API URL and token locally', 'success');
@@ -439,16 +594,12 @@ async function loginAdmin() {
     if (!token) throw new Error('No token returned');
     state.authToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
     localStorage.setItem('adminAuthToken', state.authToken);
+    localStorage.setItem('elearningAuthToken', state.authToken);
     // save user info if returned
     if (data.data && data.data.user) localStorage.setItem('elearningUser', JSON.stringify(data.data.user));
-    elements.authToken.value = state.authToken;
-    setMessage('Logged in and token saved', 'success');
-    // update header
-    try {
-      const user = JSON.parse(localStorage.getItem('elearningUser') || 'null');
-      if (user && elements.adminName) elements.adminName.textContent = user.name || user.email || 'Admin';
-      if (user && elements.adminEmail) elements.adminEmail.textContent = user.email || '';
-    } catch (e) {}
+    if (elements.authToken) elements.authToken.value = state.authToken;
+    setMessage('Logged in successfully', 'success');
+    updateAuthUI();
     fetchList();
   } catch (err) {
     setMessage(err.message || JSON.stringify(err), 'error');
@@ -456,37 +607,31 @@ async function loginAdmin() {
 }
 
 function clearToken() {
-  state.authToken = '';
-  elements.authToken.value = '';
-  localStorage.removeItem('adminAuthToken');
-  setMessage('Token cleared', 'info');
+  logoutAdmin();
 }
 
-function renderResource() {
-  buildNav();
-  const selected = state.resources[state.resource];
-  elements.resourceLabel.textContent = selected.label;
-  elements.apiUrl.value = state.apiUrl;
-  elements.authToken.value = state.authToken;
-  populateForm();
-  fetchList();
+function syncSettingsFields() {
+  if (elements.apiUrl) elements.apiUrl.value = state.apiUrl;
+  if (elements.authToken) elements.authToken.value = state.authToken;
 }
 
-function init() {
-  elements.authToken.value = state.authToken;
-  elements.apiUrl.value = state.apiUrl;
-  elements.saveToken.addEventListener('click', saveToken);
-  elements.clearToken.addEventListener('click', clearToken);
-  if (elements.loginBtn) elements.loginBtn.addEventListener('click', loginAdmin);
-  elements.refreshBtn.addEventListener('click', fetchList);
-  elements.clearFormBtn.addEventListener('click', resetForm);
-  elements.resourceForm.addEventListener('submit', saveResource);
-  if (elements.searchBtn) elements.searchBtn.addEventListener('click', () => { setMessage('Search is client-side: use Refresh to reload', 'info'); });
-  if (elements.newResourceBtn) elements.newResourceBtn.addEventListener('click', () => populateForm());
-  if (elements.openLogs) elements.openLogs.addEventListener('click', () => setMessage('Logs not available in static UI', 'info'));
-  if (elements.clearCache) elements.clearCache.addEventListener('click', () => { localStorage.clear(); setMessage('Local storage cleared', 'success'); window.location.reload(); });
+function refreshAuthToken() {
+  state.authToken = localStorage.getItem('adminAuthToken')
+    || localStorage.getItem('elearningAuthToken')
+    || '';
+  return Boolean(state.authToken);
+}
 
-  // populate header info from login
+function updateAuthUI() {
+  const isLoggedIn = refreshAuthToken();
+  const loginPanel = document.getElementById('adminLoginPanel');
+  const logoutBtn = elements.logoutBtn;
+  const actions = elements.adminActions;
+
+  if (loginPanel) loginPanel.hidden = isLoggedIn;
+  if (logoutBtn) logoutBtn.hidden = !isLoggedIn;
+  if (actions) actions.classList.toggle('is-authenticated', isLoggedIn);
+
   try {
     const user = JSON.parse(localStorage.getItem('elearningUser') || 'null');
     if (user && elements.adminName) elements.adminName.textContent = user.name || user.email || 'Admin';
@@ -494,10 +639,46 @@ function init() {
   } catch (e) {
     // ignore
   }
+}
 
-  // check API health
+function logoutAdmin() {
+  state.authToken = '';
+  localStorage.removeItem('adminAuthToken');
+  localStorage.removeItem('elearningAuthToken');
+  localStorage.removeItem('elearningUser');
+  if (elements.authToken) elements.authToken.value = '';
+  updateAuthUI();
+  setMessage('Logged out successfully', 'success');
+  window.location.href = 'index.html';
+}
+
+function renderResource() {
+  buildNav();
+  const selected = state.resources[state.resource];
+  elements.resourceLabel.textContent = selected.label;
+  syncSettingsFields();
+  clearOptionsCache();
+  void populateForm();
+  fetchList();
+}
+
+function init() {
+  syncSettingsFields();
+  if (elements.saveToken) elements.saveToken.addEventListener('click', saveToken);
+  if (elements.clearToken) elements.clearToken.addEventListener('click', clearToken);
+  if (elements.loginBtn) elements.loginBtn.addEventListener('click', loginAdmin);
+  if (elements.logoutBtn) elements.logoutBtn.addEventListener('click', logoutAdmin);
+  elements.refreshBtn.addEventListener('click', fetchList);
+  elements.clearFormBtn.addEventListener('click', resetForm);
+  elements.resourceForm.addEventListener('submit', saveResource);
+  if (elements.searchBtn) elements.searchBtn.addEventListener('click', () => { setMessage('Search is client-side: use Refresh to reload', 'info'); });
+  if (elements.newResourceBtn) elements.newResourceBtn.addEventListener('click', () => void populateForm());
+  if (elements.openLogs) elements.openLogs.addEventListener('click', () => setMessage('Logs not available in static UI', 'info'));
+  if (elements.clearCache) elements.clearCache.addEventListener('click', () => { localStorage.clear(); setMessage('Local storage cleared', 'success'); window.location.reload(); });
+
   checkApiHealth();
   buildNav();
+  updateAuthUI();
   renderResource();
 }
 
