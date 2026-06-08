@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Course Detail — E‑Learning</title>
+  <title>Lesson — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="course-detail" data-nav="courses">
+<body data-page="course-lesson" data-nav="courses">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Course Detail</span>
+      <span>Lesson</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
     <span class="nav-user" id="navUserName"></span>
@@ -21,26 +21,9 @@
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
-        <div class="section-title" id="courseTitle">Course loading...</div>
-        <p id="courseDescription"></p>
-        <div id="courseMessage"></div>
-        <div class="card-actions" id="courseActions"></div>
-        <div class="course-card" id="courseMeta"></div>
-      </div>
-
-      <div class="card">
-        <h2>Lessons</h2>
-        <div id="courseLessons" class="lesson-list"></div>
-      </div>
-
-      <div class="card">
-        <h2>Media</h2>
-        <div id="courseMedia" class="media-list"></div>
-      </div>
-
-      <div class="card">
-        <h2>Exams</h2>
-        <div id="courseExams" class="exam-list"></div>
+        <div class="section-title" id="lessonTitle">Loading lesson…</div>
+        <div id="lessonContent" class="lesson-content"></div>
+        <div id="lessonMeta" class="lesson-meta"></div>
       </div>
     </section>
   </main>

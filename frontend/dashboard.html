@@ -5,21 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="dashboard">
+<body data-page="dashboard" data-nav="dashboard">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
       <span>Dashboard</span>
     </div>
-    <nav class="nav-links">
-      <a class="nav-link" href="landing.html">Home</a>
-      <a class="nav-link" href="courses.html">Courses</a>
-      <a class="nav-link" href="exams.html">Exams</a>
-      <a class="nav-link" href="profile.html">Profile</a>
-      <a class="nav-link" href="index.html" id="signOutLink">Sign out</a>
-      <img src="assets/avatar.svg" alt="avatar">
-    </nav>
+    <nav class="nav-links" id="mainNav"></nav>
+    <span class="nav-user" id="navUserName"></span>
+    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
   </header>
 
   <main class="page-dashboard">
@@ -27,26 +23,23 @@
       <aside class="dashboard-sidebar">
         <div class="card">
           <h2>Your courses</h2>
-          <ul class="course-list">
-            <li class="course-card"><strong>Intro to JavaScript</strong><p>Continue learning functions and events.</p></li>
-            <li class="course-card"><strong>CSS for Beginners</strong><p>Practice layouts, spacing, and responsive design.</p></li>
-            <li class="course-card"><strong>Node.js APIs</strong><p>Build backend routes and use MongoDB.</p></li>
-          </ul>
+          <ul class="course-list"></ul>
         </div>
       </aside>
       <section class="dashboard-main">
         <div class="card">
           <div class="section-title">Welcome back, Student</div>
-          <p>Resume your last course or discover recommended lessons.</p>
-          <div class="dashboard-summary">
-            <div class="summary-card"><strong>14</strong><span>Lessons completed</span></div>
-            <div class="summary-card"><strong>3</strong><span>New courses</span></div>
-            <div class="summary-card"><strong>84%</strong><span>Learning goal</span></div>
+          <p>Resume your enrolled courses or browse the catalog for new ones.</p>
+          <div class="dashboard-summary"></div>
+          <div class="cta-row" style="margin-top:20px">
+            <a class="btn primary" href="courses.html">Browse courses</a>
+            <a class="btn outline" href="exams.html">View exams</a>
           </div>
         </div>
       </section>
     </div>
   </main>
+  <script src="js/api.js"></script>
   <script src="js/site.js"></script>
 </body>
 </html>

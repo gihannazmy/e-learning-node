@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Course Detail — E‑Learning</title>
+  <title>Instructor Dashboard — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="course-detail" data-nav="courses">
+<body data-page="instructor" data-nav="instructor">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
-      <span>Course Detail</span>
+      <span>Instructor</span>
     </div>
     <nav class="nav-links" id="mainNav"></nav>
     <span class="nav-user" id="navUserName"></span>
@@ -21,26 +21,18 @@
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
-        <div class="section-title" id="courseTitle">Course loading...</div>
-        <p id="courseDescription"></p>
-        <div id="courseMessage"></div>
-        <div class="card-actions" id="courseActions"></div>
-        <div class="course-card" id="courseMeta"></div>
+        <div class="section-title" id="instructorGreeting">Instructor Dashboard</div>
+        <p>Overview of your courses, lessons, exams, and media.</p>
+        <div class="dashboard-summary" id="instructorStats"></div>
+        <div class="cta-row" style="margin-top:20px">
+          <a class="btn primary" href="admin.html">Manage content (Admin panel)</a>
+          <a class="btn outline" href="courses.html">View courses</a>
+        </div>
       </div>
 
       <div class="card">
-        <h2>Lessons</h2>
-        <div id="courseLessons" class="lesson-list"></div>
-      </div>
-
-      <div class="card">
-        <h2>Media</h2>
-        <div id="courseMedia" class="media-list"></div>
-      </div>
-
-      <div class="card">
-        <h2>Exams</h2>
-        <div id="courseExams" class="exam-list"></div>
+        <h2>Your courses</h2>
+        <div id="instructorCourses" class="course-list"></div>
       </div>
     </section>
   </main>

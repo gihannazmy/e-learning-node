@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Profile — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="profile">
+<body data-page="profile" data-nav="profile">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
       <span>Profile</span>
     </div>
-    <nav class="nav-links">
-      <a class="nav-link" href="dashboard.html">Dashboard</a>
-      <a class="nav-link" href="courses.html">Courses</a>
-      <a class="nav-link" href="exams.html">Exams</a>
-      <a class="nav-link" href="index.html" id="signOutLink">Sign out</a>
-    </nav>
+    <nav class="nav-links" id="mainNav"></nav>
+    <span class="nav-user" id="navUserName"></span>
+    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
   </header>
 
   <main class="page-dashboard">
@@ -31,6 +29,7 @@
     </section>
   </main>
 
+  <script src="js/api.js"></script>
   <script src="js/site.js"></script>
 </body>
 </html>

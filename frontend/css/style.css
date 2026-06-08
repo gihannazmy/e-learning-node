@@ -126,6 +126,31 @@ button{cursor:pointer;}
 .info-message.info{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;}
 .info-message.success{background:#ecfdf5;border-color:#bbf7d0;color:#166534;}
 .info-message.error{background:#f8d7da;border-color:#f5c2c7;color:#842029;}
+.nav-link.active{color:var(--primary-dark);}
+.nav-user{font-size:.9rem;color:var(--muted);font-weight:600;}
+.nav-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
+.card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+.btn.small{min-height:38px;padding:0 14px;font-size:.88rem;}
+.lesson-list,.media-list,.exam-list{display:grid;gap:14px;margin-top:14px;}
+.lesson-item,.media-item,.exam-item{padding:16px;border-radius:16px;border:1px solid var(--border);background:var(--surface-soft);}
+.lesson-content{margin:16px 0;line-height:1.7;}
+.lesson-meta{margin-top:16px;}
+.media-player{width:100%;max-height:400px;border-radius:12px;margin-top:10px;background:#000;}
+.media-image{max-height:320px;border-radius:12px;margin-top:10px;}
+.question-block{border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;background:var(--surface-soft);}
+.question-block legend{font-weight:700;padding:0 8px;}
+.exam-form{margin-top:20px;}
+.inline-form{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:14px;}
+.inline-form .label{flex:1;min-width:220px;}
+.dept-list{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0;}
+.dept-tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(79,70,229,0.1);color:var(--primary);font-size:.85rem;font-weight:600;}
+.site-toast{position:fixed;bottom:24px;right:24px;z-index:10000;padding:14px 20px;border-radius:14px;font-weight:600;box-shadow:0 8px 30px rgba(15,23,42,0.15);max-width:360px;}
+.site-toast--success{background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;}
+.site-toast--error{background:#f8d7da;color:#842029;border:1px solid #f5c2c7;}
+.site-toast--info{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.api-banner{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;padding:12px 16px;border-radius:12px;background:rgba(248,215,218,0.95);color:#842029;box-shadow:0 8px 30px rgba(15,23,42,0.08);font-size:.95rem;}
+.profile-card{margin-bottom:14px;}
+.dashboard-summary{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
 
 @media(max-width:960px){
   .app-shell{grid-template-columns:1fr;}

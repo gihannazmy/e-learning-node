@@ -80,6 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
           alert('Login successful! Redirecting...');
           if (user && user.role === 'admin') {
             window.location.href = 'admin.html';
+          } else if (user && user.role === 'instructor') {
+            window.location.href = 'instructor-dashboard.html';
           } else {
             window.location.href = 'dashboard.html';
           }
@@ -112,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Signup successful! Redirecting...');
         if (user && user.role === 'admin') {
           window.location.href = 'admin.html';
+        } else if (user && user.role === 'instructor') {
+          window.location.href = 'instructor-dashboard.html';
         } else {
           window.location.href = 'dashboard.html';
         }

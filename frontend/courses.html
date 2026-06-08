@@ -5,31 +5,30 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Courses — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="courses">
+<body data-page="courses" data-nav="courses">
   <header class="site-header">
     <div class="brand">
       <img src="assets/logo.svg" alt="logo">
       <span>Courses</span>
     </div>
-    <nav class="nav-links">
-      <a class="nav-link" href="dashboard.html">Dashboard</a>
-      <a class="nav-link" href="exams.html">Exams</a>
-      <a class="nav-link" href="profile.html">Profile</a>
-      <a class="nav-link" href="index.html" id="signOutLink">Sign out</a>
-    </nav>
+    <nav class="nav-links" id="mainNav"></nav>
+    <span class="nav-user" id="navUserName"></span>
+    <img src="assets/avatar.svg" alt="avatar" class="nav-avatar">
   </header>
 
   <main class="page-dashboard">
     <section class="dashboard-main">
       <div class="card">
         <div class="section-title">Available Courses</div>
-        <p>Browse all published courses and open each course to see details.</p>
+        <p>Browse published courses and enroll to start learning.</p>
+        <div id="departmentsContainer" class="dept-list"></div>
         <div id="coursesContainer" class="course-list"></div>
       </div>
     </section>
   </main>
-
+  <script src="js/api.js"></script>
   <script src="js/site.js"></script>
 </body>
 </html>
