@@ -649,7 +649,7 @@ function logoutAdmin() {
   if (elements.authToken) elements.authToken.value = '';
   updateAuthUI();
   setMessage('Logged out successfully', 'success');
-  window.location.href = 'index.html';
+  window.location.href = 'login.html';
 }
 
 function renderResource() {

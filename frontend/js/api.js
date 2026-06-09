@@ -85,7 +85,7 @@ const ElearningAPI = (() => {
 
   function requireAuth() {
     if (!localStorage.getItem(authTokenKey)) {
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
       return false;
     }
     return true;
@@ -105,7 +105,7 @@ const ElearningAPI = (() => {
     localStorage.removeItem(authTokenKey);
     localStorage.removeItem(userKey);
     localStorage.removeItem(studentIdKey);
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   }
 
   function getQueryValue(key) {
