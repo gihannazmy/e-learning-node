@@ -25,7 +25,7 @@ const config = {
 
   // Server
   port: parseInt(process.env.PORT, 10) || 3000,
-  host: process.env.HOST || 'localhost',
+  host: process.env.HOST || '0.0.0.0',
 
   // Database
   database: {
@@ -68,7 +68,12 @@ const config = {
   cors: {
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     // allow common local frontend ports (3000 and 5000) by default; can be overridden by ALLOWED_ORIGINS env
-    allowedOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:3000', 'http://localhost:5000'],
+    allowedOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:5000'
+    ],
   },
 
   // Logging

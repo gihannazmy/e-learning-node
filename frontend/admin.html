@@ -25,19 +25,22 @@
       </div>
     </div>
 
-    <div class="admin-actions">
-      <div class="badge" id="apiStatus">API: --</div>
-      <div class="admin-settings" style="display:flex;gap:8px;align-items:center;margin-left:12px">
-        <input id="apiUrl" placeholder="API URL (e.g. http://localhost:3000/api/v1)" style="padding:6px;border-radius:4px;border:1px solid #ddd;width:320px">
-        <input id="authToken" placeholder="Auth token (optional)" style="padding:6px;border-radius:4px;border:1px solid #ddd;width:220px">
-        <button id="saveToken" class="btn outline small">Save</button>
-        <button id="clearToken" class="btn outline small">Clear</button>
-        <input id="loginEmail" placeholder="Email" style="padding:6px;border-radius:4px;border:1px solid #ddd;width:220px">
-        <input id="loginPassword" placeholder="Password" type="password" style="padding:6px;border-radius:4px;border:1px solid #ddd;width:180px">
-        <button id="loginBtn" class="btn outline small">Login</button>
+    <div class="admin-actions" id="adminActions">
+      <div class="admin-settings admin-settings--login" id="adminLoginPanel">
+        <input id="loginEmail" placeholder="Email" aria-label="Admin email">
+        <input id="loginPassword" placeholder="Password" type="password" aria-label="Admin password">
+        <button id="loginBtn" class="btn outline small" type="button">Login</button>
+      </div>
+      <button id="logoutBtn" class="btn outline small admin-logout" type="button" hidden>Logout</button>
+      <div class="admin-settings admin-dev-tools" hidden aria-hidden="true">
+        <div class="badge" id="apiStatus">API: --</div>
+        <input id="apiUrl" type="hidden">
+        <input id="authToken" type="hidden">
+        <button id="saveToken" type="button">Save</button>
+        <button id="clearToken" type="button">Clear</button>
       </div>
       <div class="user-menu" title="Signed in user">
-        <div class="user-avatar"><img src="assets/avatar.png" alt="avatar"></div>
+        <div class="user-avatar"><img src="assets/avatar.svg" alt="avatar"></div>
         <div style="text-align:left"><strong id="adminName">Admin</strong><div class="muted" id="adminEmail">admin@example.com</div></div>
       </div>
     </div>
@@ -79,7 +82,7 @@
           <div id="resourceList" class="resource-list"></div>
         </div>
 
-        <div class="panel card">
+        <div class="panel card panel-form">
           <div class="panel-header">
             <h2>Create / Update</h2>
           </div>

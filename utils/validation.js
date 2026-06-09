@@ -55,6 +55,48 @@ const validateUserLogin = [
   handleValidationErrors
 ];
 
+const validateUserId = [
+  param('id')
+    .isMongoId()
+    .withMessage('Please provide a valid user ID'),
+
+  handleValidationErrors
+];
+
+const validateUserUpdate = [
+  param('id')
+    .isMongoId()
+    .withMessage('Please provide a valid user ID'),
+
+  body('name')
+    .optional()
+    .trim()
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Name must be between 2 and 50 characters')
+    .matches(/^[a-zA-Z\s]+$/)
+    .withMessage('Name can only contain letters and spaces'),
+
+  body('email')
+    .optional()
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Please provide a valid email'),
+
+  body('password')
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
+
+  body('role')
+    .optional()
+    .isIn(['student', 'instructor', 'admin'])
+    .withMessage('Role must be student, instructor, or admin'),
+
+  handleValidationErrors
+];
+
 // Course validation rules
 const validateCourse = [
   body('title')
@@ -433,6 +475,8 @@ const validateStudentCourseId = [
 module.exports = {
   validateUserSignup,
   validateUserLogin,
+  validateUserId,
+  validateUserUpdate,
   validateCourse,
   validateCourseId,
   validateDepartment,

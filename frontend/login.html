@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sign Up — E‑Learning</title>
+  <title>Login — E‑Learning</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -15,7 +15,7 @@
     </div>
     <nav class="nav-links">
       <a class="nav-link" href="landing.html">Home</a>
-      <a class="nav-link" href="login.html">Sign in</a>
+      <a class="nav-btn" href="signup.html">Get started</a>
     </nav>
   </header>
 
@@ -23,38 +23,44 @@
     <aside class="hero">
       <img src="assets/hero.svg" alt="hero illustration" class="hero-img">
       <div class="hero-text">
-        <h1>Join our learning community</h1>
-        <p>Create an account and unlock courses, exams, and personalized progress tracking.</p>
+        <h1>Learn anywhere, anytime</h1>
+        <p>Interactive courses, expert instructors, and flexible schedules — all in one platform.</p>
       </div>
     </aside>
 
     <section class="auth">
       <div class="auth-card">
         <img src="assets/logo.svg" alt="logo" class="logo">
-        <h2>Create account</h2>
-        <p class="muted">Sign up to access courses and exams</p>
+        <h2>Welcome back</h2>
+        <p class="muted">Sign in to continue to the E‑Learning platform</p>
 
-        <form id="signupForm" class="form" novalidate>
-          <label class="label">Full name
-            <input id="name" name="name" type="text" placeholder="Your name" required>
-          </label>
-
+        <form id="loginForm" class="form" novalidate>
           <label class="label">Email
             <input id="email" name="email" type="email" placeholder="you@example.com" required>
           </label>
 
           <label class="label">Password
-            <input id="password" name="password" type="password" placeholder="Min. 6 chars, upper, lower, digit" required>
+            <input id="password" name="password" type="password" placeholder="••••••••" required>
           </label>
 
-          <button type="submit" class="btn primary">Create account</button>
+          <div class="form-row space-between">
+            <label class="checkbox">
+              <input type="checkbox" id="remember"> Remember me
+            </label>
+            <a href="forgot.html" class="link">Forgot?</a>
+          </div>
 
-          <p class="small">Already have an account? <a href="login.html">Sign in</a></p>
+          <button type="submit" class="btn primary">Sign in</button>
+
+          <div class="divider">or</div>
+
+          <button type="button" class="btn outline" id="githubBtn">Sign in with GitHub</button>
+
+          <p class="small">Don't have an account? <a href="signup.html">Create one</a></p>
         </form>
       </div>
     </section>
   </main>
-
   <script src="js/app.js"></script>
 </body>
 </html>

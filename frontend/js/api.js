@@ -85,7 +85,7 @@ const ElearningAPI = (() => {
 
   function requireAuth() {
     if (!localStorage.getItem(authTokenKey)) {
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
       return false;
     }
     return true;
@@ -105,7 +105,7 @@ const ElearningAPI = (() => {
     localStorage.removeItem(authTokenKey);
     localStorage.removeItem(userKey);
     localStorage.removeItem(studentIdKey);
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   }
 
   function getQueryValue(key) {
@@ -116,8 +116,115 @@ const ElearningAPI = (() => {
     return course?.title || course?.courseName || 'Untitled course';
   }
 
+  function getDepartmentName(department, fallback = 'N/A') {
+    if (!department) return fallback;
+    if (typeof department === 'string') return department;
+    if (typeof department === 'object') {
+      return department.departmentName || department.name || fallback;
+    }
+    return String(department);
+  }
+
+  function getCourseDepartmentName(course, fallback = 'General') {
+    return getDepartmentName(course?.departmentId, fallback);
+  }
+
+  function isValidObjectId(value) {
+    return typeof value === 'string' && /^[a-f\d]{24}$/i.test(value);
+  }
+
   function getCourseMongoId(course) {
-    return course?._id || course?.id || null;
+    if (!course) return '';
+    if (typeof course === 'string') {
+      return isValidObjectId(course) ? course : '';
+    }
+
+    const candidates = [course._id, course.id];
+    for (const raw of candidates) {
+      if (!raw) continue;
+      if (typeof raw === 'object' && raw.$oid) {
+        const id = String(raw.$oid);
+        if (isValidObjectId(id)) return id;
+      }
+      const id = String(raw);
+      if (isValidObjectId(id)) return id;
+    }
+    return '';
+  }
+
+  function buildPageUrl(page, params = {}) {
+    const search = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        search.set(key, String(value));
+      }
+    });
+    const query = search.toString();
+    const slug = String(page).replace(/\.html$/i, '');
+    return query ? `${slug}?${query}` : slug;
+  }
+
+  function getCourseDetailUrl(course) {
+    const mongoId = getCourseMongoId(course);
+    if (mongoId) return buildPageUrl('course-detail', { id: mongoId });
+    if (course?.courseId !== undefined && course?.courseId !== null && course?.courseId !== '') {
+      return buildPageUrl('course-detail', { courseId: course.courseId });
+    }
+    return '';
+  }
+
+  function goToCourseDetail(courseOrId) {
+    if (courseOrId && typeof courseOrId === 'object') {
+      const url = getCourseDetailUrl(courseOrId);
+      if (!url) {
+        showToast('Cannot open this course. Missing course ID.', 'error');
+        return;
+      }
+      window.location.href = url;
+      return;
+    }
+
+    const id = String(courseOrId || '').trim();
+    if (!id || id === 'null' || id === 'undefined') {
+      showToast('Cannot open this course. Missing course ID.', 'error');
+      return;
+    }
+    window.location.href = buildPageUrl('course-detail', { id });
+  }
+
+  async function resolveCourseIdFromQuery() {
+    const idParam = getQueryValue('id');
+    const courseIdParam = getQueryValue('courseId');
+    const invalidIds = new Set(['', 'null', 'undefined']);
+
+    if (idParam && !invalidIds.has(idParam) && isValidObjectId(idParam)) return idParam;
+
+    let courses = [];
+    try {
+      courses = normalizeList(await fetchJson('/courses'));
+    } catch {
+      courses = [];
+    }
+
+    if (idParam && !invalidIds.has(idParam)) {
+      const match = courses.find((course) => getCourseMongoId(course) === idParam);
+      if (match) return getCourseMongoId(match) || idParam;
+    }
+
+    if (courseIdParam && !invalidIds.has(String(courseIdParam))) {
+      const match = courses.find((course) => String(course.courseId) === String(courseIdParam));
+      if (match) {
+        return getCourseMongoId(match) || String(match.courseId);
+      }
+      if (isValidObjectId(String(courseIdParam))) return String(courseIdParam);
+      return String(courseIdParam);
+    }
+
+    if (idParam && !invalidIds.has(idParam)) {
+      return idParam;
+    }
+
+    return '';
   }
 
   function matchesCourseId(item, courseRef) {
@@ -256,8 +363,15 @@ const ElearningAPI = (() => {
     requireRole,
     signOut,
     getQueryValue,
+    buildPageUrl,
     getCourseTitle,
+    getDepartmentName,
+    getCourseDepartmentName,
     getCourseMongoId,
+    getCourseDetailUrl,
+    goToCourseDetail,
+    resolveCourseIdFromQuery,
+    isValidObjectId,
     matchesCourseId,
     matchesExamId,
     showMessage,

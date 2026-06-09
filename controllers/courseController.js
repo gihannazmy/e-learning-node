@@ -11,7 +11,7 @@ exports.createCourse = async (req, res) => {
 
 exports.getCourses = async (req, res) => {
   try {
-    const courses = await Course.find().populate('departmentId');
+    const courses = await Course.find().populate('departmentId').populate('instructorId');
     res.json(courses);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -20,10 +20,24 @@ exports.getCourses = async (req, res) => {
 
 exports.getCourse = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('departmentId');
+    const { id } = req.params;
+    let course;
+
+    if (/^[a-f\d]{24}$/i.test(id)) {
+      course = await Course.findById(id).populate('departmentId').populate('instructorId');
+    }
+
+    if (!course) {
+      const numericId = Number(id);
+      if (!Number.isNaN(numericId)) {
+        course = await Course.findOne({ courseId: numericId }).populate('departmentId').populate('instructorId');
+      }
+    }
+
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
+
     res.json(course);
   } catch (error) {
     res.status(500).json({ error: error.message });

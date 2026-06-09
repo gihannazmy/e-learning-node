@@ -8,26 +8,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderCourseCard(course, options = {}) {
     const id = api.getCourseMongoId(course);
+    const detailUrl = api.getCourseDetailUrl(course);
     const title = api.getCourseTitle(course);
-    const dept = course.departmentId?.departmentName || course.departmentId?.name || course.departmentId || 'General';
+    const dept = api.getCourseDepartmentName(course);
     const card = document.createElement('div');
     card.className = 'course-card';
-    const enrollBtn = options.showEnroll
-      ? `<button type="button" class="btn primary small btn-enroll" data-course-id="${id}">Enroll now</button>`
+    const enrollBtn = options.showEnroll && (id || course.courseId != null)
+      ? `<button type="button" class="btn primary small btn-enroll" data-course-id="${id || course.courseId}">Enroll now</button>`
       : '';
+    const detailsBtn = detailUrl
+      ? `<a class="btn outline small course-detail-link" href="${detailUrl}">View details</a>`
+      : `<span class="muted">Details unavailable</span>`;
     card.innerHTML = `
       <div class="course-card__head">
         <div class="course-card__icon">${api.getCourseInitial(title)}</div>
         <span class="badge badge--primary">${dept}</span>
       </div>
       <strong>${title}</strong>
-      <p>${course.description || 'Explore lessons, media, and exams in this course.'}</p>
+      <p>${course.description || course.courseName || 'Explore lessons, media, and exams in this course.'}</p>
       <div class="card-actions">
-        <a class="btn outline small" href="course-detail.html?id=${id}">View details</a>
+        ${detailsBtn}
         ${enrollBtn}
       </div>
     `;
+    const detailLink = card.querySelector('.course-detail-link');
+    if (detailLink) {
+      detailLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        api.goToCourseDetail(course);
+      });
+    }
     return card;
+  }
+
+  function attachCourseDetailLinks(container) {
+    if (!container) return;
+    container.querySelectorAll('.course-detail-link').forEach((link) => {
+      if (link.dataset.bound === 'true') return;
+      link.dataset.bound = 'true';
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) window.location.href = href;
+      });
+    });
   }
 
   async function enrollInCourse(courseId) {
@@ -75,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       courses.forEach((course) => container.appendChild(renderCourseCard(course, { showEnroll: true })));
       attachEnrollHandlers(container);
+      attachCourseDetailLinks(container);
     } catch (error) {
       container.innerHTML = `<p class="muted">${error.message}</p>`;
     }
@@ -112,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         coursesContainer.innerHTML = `<li>${api.renderEmptyState('No courses yet. Browse the catalog to enroll.', '🎯')}</li>`;
       } else {
         displayCourses.slice(0, 5).forEach((course) => {
-          const id = api.getCourseMongoId(course);
+          const detailUrl = api.getCourseDetailUrl(course);
           const title = api.getCourseTitle(course);
           const li = document.createElement('li');
           li.className = 'course-card';
@@ -121,13 +146,23 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="course-card__icon">${api.getCourseInitial(title)}</div>
             </div>
             <strong>${title}</strong>
-            <p>${course.description || 'Continue learning.'}</p>
+            <p>${course.description || course.courseName || 'Continue learning.'}</p>
             <div class="card-actions">
-              <a class="btn primary small" href="course-detail.html?id=${id}">Continue</a>
+              ${detailUrl
+                ? `<a class="btn primary small course-detail-link" href="${detailUrl}">Continue</a>`
+                : '<span class="muted">Details unavailable</span>'}
             </div>
           `;
+          const link = li.querySelector('.course-detail-link');
+          if (link) {
+            link.addEventListener('click', (event) => {
+              event.preventDefault();
+              api.goToCourseDetail(course);
+            });
+          }
           coursesContainer.appendChild(li);
         });
+        attachCourseDetailLinks(coursesContainer);
       }
     }
 
@@ -144,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadCourseDetail() {
-    const courseId = api.getQueryValue('id');
     const titleEl = document.getElementById('courseTitle');
     const descriptionEl = document.getElementById('courseDescription');
     const metaEl = document.getElementById('courseMeta');
@@ -154,23 +188,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const actionsEl = document.getElementById('courseActions');
     const messageEl = document.getElementById('courseMessage');
 
-    if (!courseId || !titleEl) {
+    if (!titleEl) {
       window.location.href = 'courses.html';
       return;
     }
 
     titleEl.textContent = 'Loading course…';
+    const courseId = await api.resolveCourseIdFromQuery();
+
+    if (!courseId) {
+      titleEl.textContent = 'Course not found';
+      if (descriptionEl) descriptionEl.textContent = 'This course link is invalid or the course was removed.';
+      api.showMessage(messageEl, 'Invalid course URL. Please go back to the catalog and choose a course again.', 'error');
+      return;
+    }
+
     try {
       const course = await api.fetchJson(`/courses/${courseId}`);
       const courseData = course.data?.course || course;
+      const resolvedMongoId = api.getCourseMongoId(courseData) || courseId;
 
       titleEl.textContent = api.getCourseTitle(courseData);
-      descriptionEl.textContent = courseData.description || 'No description available.';
+      if (descriptionEl) {
+        descriptionEl.textContent = courseData.description || courseData.courseName || 'No description available.';
+      }
       metaEl.innerHTML = `
         <strong>Department</strong>
-        <p>${courseData.departmentId?.departmentName || courseData.departmentId || 'N/A'}</p>
+        <p>${api.getCourseDepartmentName(courseData, 'N/A')}</p>
         <strong>Course ID</strong>
-        <p>${api.getCourseMongoId(courseData)}</p>
+        <p>${resolvedMongoId}</p>
       `;
 
       if (actionsEl) {
@@ -179,13 +225,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <a class="btn outline" href="courses.html">Back to catalog</a>
         `;
         document.getElementById('enrollCourseBtn').addEventListener('click', () => {
-          enrollInCourse(api.getCourseMongoId(courseData));
+          enrollInCourse(resolvedMongoId);
         });
       }
 
       const [detailsResult, mediaResult, examsResult] = await Promise.all([
         api.fetchJson('/course-details').catch(() => []),
-        api.fetchJson(`/course-media?courseId=${courseId}&limit=50`).catch(() => ({})),
+        api.fetchJson(`/course-media?courseId=${resolvedMongoId}&limit=50`).catch(() => ({})),
         api.fetchJson('/course-exams').catch(() => [])
       ]);
 
@@ -201,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="lesson-item">
               <strong>${lesson.title || 'Lesson'}</strong>
               <p>${lesson.description || lesson.content || 'No content preview.'}</p>
-              <a class="btn outline small" href="course-lesson.html?id=${lesson._id}&courseId=${courseId}">Open lesson</a>
+              <a class="btn outline small" href="${api.buildPageUrl('course-lesson', { id: lesson._id, courseId: resolvedMongoId })}">Open lesson</a>
             </div>
           `).join('');
         }
@@ -253,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <strong>${exam.title}</strong>
               <p>${exam.description || ''}</p>
               <p><small>Marks: ${exam.minDegree || 0}–${exam.maxDegree || exam.totalMarks || 0}</small></p>
-              <a class="btn primary small" href="exam-take.html?id=${exam._id}">Take exam</a>
+              <a class="btn primary small" href="${api.buildPageUrl('exam-take', { id: exam._id })}">Take exam</a>
             </div>
           `).join('');
         }
@@ -285,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       metaEl.innerHTML = `
         <p><strong>Duration:</strong> ${lesson.duration ? `${lesson.duration} min` : 'N/A'}</p>
-        ${courseId ? `<a class="btn outline" href="course-detail.html?id=${courseId}">Back to course</a>` : ''}
+        ${courseId ? `<a class="btn outline" href="${api.buildPageUrl('course-detail', { id: courseId })}">Back to course</a>` : ''}
       `;
     } catch (error) {
       titleEl.textContent = 'Lesson unavailable';
@@ -305,8 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <p>${exam.description || 'Complete this assessment to test your knowledge.'}</p>
       <p><small>Marks: ${exam.minDegree || 0}–${exam.maxDegree || exam.totalMarks || 0}</small></p>
       <div class="card-actions">
-        <a class="btn primary small" href="exam-take.html?id=${exam._id}">Take exam</a>
-        <a class="btn outline small" href="exam-results.html?examId=${exam._id}">View results</a>
+        <a class="btn primary small" href="${api.buildPageUrl('exam-take', { id: exam._id })}">Take exam</a>
+        <a class="btn outline small" href="${api.buildPageUrl('exam-results', { examId: exam._id })}">View results</a>
       </div>
     `;
     return card;
@@ -393,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           api.showMessage(messageEl, `Exam submitted! Score: ${totalScore}`, 'success');
           setTimeout(() => {
-            window.location.href = `exam-results.html?examId=${examId}`;
+            window.location.href = api.buildPageUrl('exam-results', { examId });
           }, 1500);
         } catch (error) {
           api.showMessage(messageEl, error.message, 'error');
@@ -500,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="course-card">
                 <strong>${course ? api.getCourseTitle(course) : 'Course'}</strong>
                 <p>Progress: ${e.progress || 0}% · Status: ${e.completionStatus || 'in-progress'}</p>
-                ${course ? `<a class="btn outline small" href="course-detail.html?id=${api.getCourseMongoId(course)}">Open course</a>` : ''}
+                ${course ? `<a class="btn outline small" href="${api.getCourseDetailUrl(course)}">Open course</a>` : ''}
               </div>`;
           }).join('')}
         `;
@@ -539,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ? courses.map((c) => `
               <div class="course-card">
                 <strong>${api.getCourseTitle(c)}</strong>
-                <a class="btn outline small" href="course-detail.html?id=${api.getCourseMongoId(c)}">Manage content</a>
+                <a class="btn outline small" href="${api.getCourseDetailUrl(c)}">Manage content</a>
               </div>`).join('')
           : '<p>No courses yet. Use the admin panel to create courses.</p>';
       }

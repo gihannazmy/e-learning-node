@@ -11,7 +11,7 @@ exports.createInstructor = async (req, res) => {
 
 exports.getInstructors = async (req, res) => {
   try {
-    const instructors = await Instructor.find();
+    const instructors = await Instructor.find().populate('userId');
     res.json(instructors);
   } catch (error) {
     res.status(500).json({ error: error.message });

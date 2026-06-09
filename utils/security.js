@@ -77,10 +77,10 @@ const createRateLimit = (options = {}) => {
 // General API rate limiter
 const apiLimiter = createRateLimit();
 
-// Auth rate limiter (more restrictive)
+// Auth rate limiter (more restrictive in production)
 const authLimiter = createRateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 attempts per window
+  max: config.isDevelopment() ? 100 : 5,
   message: {
     status: 'error',
     message: 'Too many authentication attempts, please try again after 15 minutes.'

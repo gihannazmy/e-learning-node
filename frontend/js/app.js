@@ -2,8 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
   const forgotForm = document.getElementById('forgotForm');
-  const apiBase = localStorage.getItem('frontendApiUrl') || 'http://localhost:3000/api/v1';
 
+  function resolveApiBase() {
+    const stored = localStorage.getItem('frontendApiUrl');
+    if (stored) return stored.replace(/\/$/, '');
+    return 'http://localhost:3000/api/v1';
+  }
+
+  const apiBase = resolveApiBase();
   const authTokenKey = 'elearningAuthToken';
 
   function getHeaders(isJson = true) {
@@ -14,32 +20,45 @@ document.addEventListener('DOMContentLoaded', () => {
     return headers;
   }
 
+  function formatFetchError(error) {
+    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+      return 'Cannot reach the API server. Run "npm run dev" for the backend and open the site at http://localhost:5000 (not as a local file).';
+    }
+    return error.message || 'Login failed';
+  }
+
   async function handleResponse(response) {
     const contentType = response.headers.get('content-type') || '';
+    let data = null;
 
-    // If the response is JSON, parse it and handle errors normally
     if (contentType.includes('application/json')) {
-      const data = await response.json();
+      data = await response.json();
+    } else {
+      const text = await response.text();
       if (!response.ok) {
-        const message = data.message || data.error || 'Failed request';
-        throw new Error(message);
+        throw new Error(text || `Request failed (status ${response.status})`);
       }
-      return data;
+      return text;
     }
 
-    // If server returned HTML or plain text, show a helpful error instead of a JSON parse failure
-    const text = await response.text();
-    const snippet = text ? text.slice(0, 300) : '';
-    const statusNote = response.ok ? '' : ` (status ${response.status})`;
-    throw new Error(`Expected JSON but server returned HTML/text${statusNote}: ${snippet}`);
+    if (!response.ok) {
+      const message = data.message || data.error || (Array.isArray(data.errors) && data.errors.join(', ')) || 'Failed request';
+      throw new Error(message);
+    }
+    return data;
   }
 
   async function submitForm(url, payload, isJson = true) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: getHeaders(isJson),
-      body: isJson ? JSON.stringify(payload) : payload
-    });
+    let response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: getHeaders(isJson),
+        body: isJson ? JSON.stringify(payload) : payload
+      });
+    } catch (error) {
+      throw new Error(formatFetchError(error));
+    }
     return handleResponse(response);
   }
 
@@ -62,12 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('OAuth flow placeholder');
   });
 
+  if (window.location.protocol === 'file:') {
+    console.warn('Open the frontend via http://localhost:5000 instead of opening HTML files directly.');
+  }
+
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = {
         email: loginForm.email.value.trim(),
-        password: loginForm.password.value.trim()
+        password: loginForm.password.value
       };
 
       try {
@@ -89,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Login succeeded but token was missing.');
       }
       } catch (error) {
-        alert(`Login failed: ${error.message}`);
+        alert(`Login failed: ${formatFetchError(error)}`);
       }
     });
   }
@@ -100,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const payload = {
         name: signupForm.name.value.trim(),
         email: signupForm.email.value.trim(),
-        password: signupForm.password.value.trim(),
+        password: signupForm.password.value,
         role: 'student'
       };
 

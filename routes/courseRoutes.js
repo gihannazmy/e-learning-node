@@ -14,7 +14,7 @@ const { validateCourse, validateCourseId } = require('../utils/validation');
 
 router.post('/', protect, restrictTo('instructor', 'admin'), validateCourse, createCourse);
 router.get('/', getCourses);
-router.get('/:id', validateCourseId, getCourse);
+router.get('/:id', getCourse);
 router.put('/:id', protect, restrictTo('instructor', 'admin'), validateCourseId, validateCourse, updateCourse);
 router.delete('/:id', protect, restrictTo('admin'), validateCourseId, deleteCourse);
 
